@@ -1,0 +1,1 @@
+# firware_test_sdcard_fat

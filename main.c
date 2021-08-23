@@ -401,13 +401,13 @@ void readSDIOData(){
  */
 int main(void)
 {
-//    bsp_board_init(BSP_INIT_LEDS);
+    bsp_board_init(BSP_INIT_LEDS);
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
     NRF_LOG_DEFAULT_BACKENDS_INIT();
 
     printf("FATFS example started.\r\n");
     
-//    fatfs_example();
+    fatfs_example();
     nrf_delay_ms(100);
     board_init();
 

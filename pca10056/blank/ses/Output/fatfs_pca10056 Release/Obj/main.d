@@ -1,5 +1,5 @@
 Output/fatfs_pca10056\ Release/Obj/main.o: \
- H:\CHJ\nRF5_16\examples\peripheral\test_fatfs\main.c \
+ H:\CHJ\nRF5_16\examples\peripheral\firmware_test_sdcard_fat\main.c \
  h:\chj\nrf5_16\modules\nrfx\mdk\nrf.h \
  h:\chj\nrf5_16\modules\nrfx\mdk\nrf52840.h \
  h:\chj\nrf5_16\components\toolchain\cmsis\include\core_cm4.h \
@@ -73,4 +73,5 @@ Output/fatfs_pca10056\ Release/Obj/main.o: \
  h:\chj\nrf5_16\components\libraries\memobj\nrf_memobj.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdlib.h \
  h:\chj\nrf5_16\components\libraries\balloc\nrf_balloc.h \
- h:\chj\nrf5_16\components\libraries\log\nrf_log_default_backends.h
+ h:\chj\nrf5_16\components\libraries\log\nrf_log_default_backends.h \
+ h:\chj\nrf5_16\components\libraries\delay\nrf_delay.h

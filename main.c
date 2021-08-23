@@ -59,6 +59,8 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
+#include "nrf_delay.h"
+
 #define FILE_NAME   "NORDIC.TXT"
 #define TEST_STRING "SD card example."
 
@@ -66,6 +68,16 @@
 #define SDC_MOSI_PIN    ARDUINO_11_PIN  ///< SDC serial data in (DI) pin.
 #define SDC_MISO_PIN    ARDUINO_12_PIN  ///< SDC serial data out (DO) pin.
 #define SDC_CS_PIN      ARDUINO_10_PIN  ///< SDC chip select (CS) pin.
+
+#define OID_DEC_SCK     NRF_GPIO_PIN_MAP(1, 6)
+#define OID_DEC_SDO     NRF_GPIO_PIN_MAP(1, 8)
+#define OID_DEC_DELAY   50
+
+#define HIGH            1
+#define LOW             0
+
+#define OUTPUT          0xf0
+#define INPUT           0xf1
 
 /**
  * @brief  SDC block device definition
@@ -178,24 +190,236 @@ static void fatfs_example()
     return;
 }
 
+void digitalWrite(uint8_t pin, uint8_t value)
+{
+  if(value)
+    nrf_gpio_pin_set(pin);
+  else 
+    nrf_gpio_pin_clear(pin);
+}
+
+uint8_t digitalRead(uint8_t pin)
+{
+  return (nrf_gpio_pin_read(pin))?HIGH:LOW;
+}
+
+void board_init()
+{
+  nrf_gpio_cfg_input(OID_DEC_SDO, NRF_GPIO_PIN_NOPULL);
+  nrf_gpio_cfg_output(OID_DEC_SCK);
+
+  digitalWrite(OID_DEC_SCK, HIGH);
+          
+  nrf_delay_ms(30);
+  digitalWrite(OID_DEC_SCK, LOW);
+  nrf_delay_ms(10);
+}
+
+void readSDIOData(){
+	 //SEGGER_RTT_printf(0, "oid\n");
+   uint32_t dataTemp1= 0, newRecordedDaata = 0;
+   newRecordedDaata = 0xFFFFFF;
+   
+   digitalWrite(OID_DEC_SCK, HIGH);   // start
+   nrf_delay_us(OID_DEC_DELAY);
+  
+   nrf_gpio_cfg_output(OID_DEC_SDO);
+   digitalWrite(OID_DEC_SDO, LOW);
+   digitalWrite(OID_DEC_SCK, LOW);
+
+   nrf_delay_us(OID_DEC_DELAY);   
+
+   nrf_gpio_cfg_input(OID_DEC_SDO, NRF_GPIO_PIN_NOPULL);
+   
+   digitalWrite(OID_DEC_SCK, HIGH);    // 22th Bit   
+   nrf_delay_us(OID_DEC_DELAY);   
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+   
+   digitalWrite(OID_DEC_SCK, HIGH);    // 21th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 20th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 19th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 18th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 17th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 16th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 15th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 14th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 13th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 12th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 11th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 10th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 9th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 8th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 7th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 6th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 5th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 4th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 3th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 2th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 1th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+
+   digitalWrite(OID_DEC_SCK, HIGH);    // 0th Bit
+   nrf_delay_us(OID_DEC_DELAY);
+   digitalWrite(OID_DEC_SCK, LOW);     
+   nrf_delay_us(OID_DEC_DELAY);
+   dataTemp1 = dataTemp1 << 1;
+   if (digitalRead(OID_DEC_SDO) == HIGH) dataTemp1 = dataTemp1 + 1;
+	//	SEGGER_RTT_printf(0, "code %x\r\n", dataTemp1);
+//		newRecordedDaata =  dataTemp1;
+    printf("%x\r\n", dataTemp1);
+	
+}
 /**
  * @brief Function for main application entry.
  */
 int main(void)
 {
-    bsp_board_init(BSP_INIT_LEDS);
-
+//    bsp_board_init(BSP_INIT_LEDS);
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
     NRF_LOG_DEFAULT_BACKENDS_INIT();
 
     printf("FATFS example started.\r\n");
-
-    fatfs_example();
+    
+//    fatfs_example();
+    nrf_delay_ms(100);
+    board_init();
 
     while (true)
     {
-        NRF_LOG_FLUSH();
-        __WFE();
+      if ((digitalRead(OID_DEC_SDO) == LOW)) 
+      {
+        readSDIOData();
+        nrf_delay_ms(100);
+      }
+      NRF_LOG_FLUSH();
+//      __WFE();
     }
 }
 
